@@ -7,29 +7,29 @@ import json
 import os
 
 
-def download_alttester(version):
+def download_alttester(release):
     """
     Downloads the given version of AltTester from GitHub.
     Saves the file to the present working directory as "AltTester.zip".
 
     Args:
-        `string` version: The AltTester version to use.
+        `string` release: The AltTester version to use.
     """
-    zip_url = f"https://github.com/alttester/AltTester-Unity-SDK/archive/refs/tags/v.{version}.zip"
+    zip_url = f"https://github.com/alttester/AltTester-Unity-SDK/archive/refs/tags/v.{release}.zip"
     urllib.request.urlretrieve(zip_url, "AltTester.zip")
 
 
-def add_alttester_to_project(version, assets):
+def add_alttester_to_project(release, assets):
     """
     Unzips "AltTester.zip" to the given Assets directory.
 
     Args:
-        `string` version: The AltTester version to use.
+        `string` release: The AltTester version to use.
         `string` assets: The Assets folder path.
     """
     with ZipFile("AltTester.zip", 'r') as zip:
         zip.extractall(f"{assets}/temp")
-    shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{version}/Assets/AltTester", f"{assets}/AltTester") 
+    shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/AltTester", f"{assets}/AltTester") 
     shutil.rmtree(f"{assets}/temp")
 
 
@@ -122,29 +122,29 @@ def modify_build_file_method(scenes, buildFile, buildMethod):
         outfile.write('\n'.join(outData))
 
 
-def delete_line_and_preceding (file_path, target_string):
+def delete_line_and_preceding (file_path, value):
     """
-    This is my comment.
+    Removes the line of code that contains the given sting and the line preceeding it from the returned data.
 
     Args:
         `string` file_path: The path to the file to modify.
-        `string` target_string: The path to the file to modify.
+        `string` value: The path to the file to modify.
     """
     with open(file_path, 'r+') as file:
         lines = file.readlines()
         fileOutBuffer = []
         for i in range(len(lines)):
-            if target_string in lines[i]:
+            if value in lines[i]:
                 fileOutBuffer.pop()
             else:
                 fileOutBuffer.append(lines[i])
     with open(file_path, 'w') as file:
-        file.write("\n".join(fileOutBuffer))
+        file.write("".join(fileOutBuffer))
 
 
 def delete_csharp_if(file_path, target_string):
     """
-    Find c# conditional logic and make it unconditional.  
+    Find C# conditional logic and make it unconditional.  
 
     Args:
         `string` file_path: The path to the file to modify.
@@ -232,8 +232,7 @@ def remove_new_input_system(assets):
     os.remove(f"{assets}/AltTester/Examples.meta")
 
     alt_prefab_drag_path = f"{assets}/AltTester/AltServer/AltPrefabDrag.cs"
-    line_to_target = "UnityEngine.InputSystem"
-    delete_line_and_preceding(alt_prefab_drag_path, line_to_target)
+    delete_line_and_preceding(alt_prefab_drag_path, "UnityEngine.InputSystem")
 
     delete_csharp_if(f"{assets}/AltTester/AltServer/Input.cs", "InputSystemUIInputModule")
     delete_using(f"{assets}/AltTester/AltServer/Input.cs", "UnityEngine.InputSystem.UI")
@@ -244,7 +243,8 @@ def remove_new_input_system(assets):
 # Main entry point.
 if __name__ == "__main__":
     parser=argparse.ArgumentParser()
-    parser.add_argument("--version", help="The AltTester version to use.")
+    parser.add_argument("--version", help="1.0.0") # ToDo: Pull in from TOML?
+    parser.add_argument("--release", help="The AltTester version to use.")
     parser.add_argument("--assets", help="The Assets folder path.")
     parser.add_argument("--settings", help="The build settings file.")
     parser.add_argument("--manifest", help="The manifest file to modify.")
@@ -253,8 +253,8 @@ if __name__ == "__main__":
     parser.add_argument("--inputSystem", help="new or old")
     args=parser.parse_args()
 
-    download_alttester(version=args.version)
-    add_alttester_to_project(version=args.version, assets=args.assets)
+    download_alttester(release=args.release)
+    add_alttester_to_project(release=args.release, assets=args.assets)
     modify_manifest(manifest=args.manifest)
     modify_build_file_usings(buildFile=args.buildFile)
     scene_array = get_scenes_of_game(settings=args.settings)
