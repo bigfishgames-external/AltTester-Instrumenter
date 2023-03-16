@@ -1,0 +1,10 @@
+[project]
+name = "AltTester-Instrumenter"
+version = "1.0.0"
+description = "Instruments Unity games with AltTester."
+license = "MIT"
+authors = [
+    {name = "Big Fish Games <support@bigfishgames.zendesk.com>"}
+]
+readme = "README.md"
+repository = "https://github.com/bigfishgames-external/AltTester-Instrumenter"
