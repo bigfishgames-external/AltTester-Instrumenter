@@ -17,7 +17,7 @@ options:
   --manifest    MANIFEST        [required] The manifest file to modify.
   --buildFile   BUILDFILE       [required] The build file to modify.
   --buildMethod BUILDMETHOD     [required] The build method to modify.
-  --inputSystem INPUTSYSTEM     [default=old] Specify new or old.
+  --inputSystem INPUTSYSTEM     [rewuired] Specify new or old.
 ```
 
 ### Example

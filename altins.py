@@ -223,7 +223,7 @@ if __name__ == "__main__":
     parser.add_argument("--manifest", required=True, help="[required] The manifest file to modify.")
     parser.add_argument("--buildFile", required=True, help="[required] The build file to modify.")
     parser.add_argument("--buildMethod", required=True, help="[required] The build method to modify.")
-    parser.add_argument("--inputSystem", default="old", help="[default='old'] Specify new or old.")
+    parser.add_argument("--inputSystem", required=True, help="[default='old'] Specify new or old.")
     args=parser.parse_args()
 
     download_alttester(release=args.release)
