@@ -236,7 +236,6 @@ if __name__ == "__main__":
     logging.info(f"buildMethod: {args.buildMethod}")
     logging.info(f"inputSystem: {args.inputSystem}")
 
-
     download_alttester(release=args.release)
     add_alttester_to_project(release=args.release, assets=args.assets)
     modify_manifest(manifest=args.manifest)
