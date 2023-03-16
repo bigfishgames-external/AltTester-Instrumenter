@@ -30,6 +30,8 @@ def add_alttester_to_project(release, assets):
     """
     with ZipFile("AltTester.zip", 'r') as zip:
         zip.extractall(f"{assets}/temp")
+    if os.path.exists(f"{assets}/AltTester"):
+        shutil.rmtree(f"{assets}/AltTester")
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/AltTester", f"{assets}/AltTester") 
     shutil.rmtree(f"{assets}/temp")
 
