@@ -152,42 +152,15 @@ def delete_csharp_if(file_path, target_string):
     """
     with open(file_path, 'r+') as file:
         lines = file.readlines()
-        lines_to_pop = []
         fileOutBuffer = []
-        popped_count = 0
-        brace_count = 0
         for i in range(len(lines)):
             if ("if" in lines[i]) and (target_string in lines[i]):
-                lines_to_pop.append(i)
-                # find the curly braces
-                # 1. flow where the { is on the end of the if line
                 if "{" in lines[i]:
-                    brace_count = 1
-                    current_line = i+1
-                    while brace_count > 0: # this is dangerous, no other escape condition. could run forever
-                        if "{" in lines[current_line]:
-                            brace_count += 1
-                        if "}" in lines[current_line]:
-                            brace_count -= 1
-                        current_line += 1
-                    lines_to_pop.append(current_line)
-                    
-                # 2. flow where the { is on the next line
+                    fileOutBuffer.append("if (true) {\n")
                 else:
-                    brace_count = 1
-                    current_line = i+2
-                    lines_to_pop.append(i+1)
-                    while brace_count > 0: # this is dangerous, no other escape condition. could run forever
-                        current_line += 1
-                        if "{" in lines[current_line]:
-                            brace_count += 1
-                        if "}" in lines[current_line]:
-                            brace_count -= 1
-                    lines_to_pop.append(current_line)
-            fileOutBuffer.append(lines[i])
-        for badline in lines_to_pop:
-            fileOutBuffer.pop(badline - popped_count)
-            popped_count += 1
+                    fileOutBuffer.append("if (true)\n")
+            else:
+                fileOutBuffer.append(lines[i])
 
     with open(file_path, 'w') as file:
         file.write("".join(fileOutBuffer))
