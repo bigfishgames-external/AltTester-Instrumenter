@@ -20,5 +20,8 @@ options:
   --inputSystem INPUTSYSTEM     [default=old] Specify new or old.
 ```
 
+### Example
+`python3 -m altins --release="1.8.2" --assets="/Users/timothy.cope/Documents/GitHub/EndlessRunnerSampleGame/Assets" --settings="/Users/timothy.cope/Documents/GitHub/EndlessRunnerSampleGame/ProjectSettings/EditorBuildSettings.asset" --manifest="/Users/timothy.cope/Documents/GitHub/EndlessRunnerSampleGame/Packages/manifest.json" --buildFile="/Users/timothy.cope/Documents/GitHub/EndlessRunnerSampleGame/Assets/Editor/BundleAndBuild.cs" --buildMethod="Build" --inputSystem="old"`
+
 ## Uninstall
 `pip3 uninstall AltTester-Instrumenter`
