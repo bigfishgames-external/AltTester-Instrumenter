@@ -7,4 +7,3 @@ authors = [
     {name = "Big Fish Games <support@bigfishgames.zendesk.com>"}
 ]
 readme = "README.md"
-repository = "https://github.com/bigfishgames-external/AltTester-Instrumenter"
