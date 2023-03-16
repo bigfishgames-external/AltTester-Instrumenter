@@ -16,6 +16,7 @@ def download_alttester(release):
     Args:
         `string` release: The AltTester version to use.
     """
+    print(f"release: {release}") # DEBUGGING
     zip_url = f"https://github.com/alttester/AltTester-Unity-SDK/archive/refs/tags/v.{release}.zip"
     urllib.request.urlretrieve(zip_url, "AltTester.zip")
 
@@ -28,6 +29,8 @@ def add_alttester_to_project(release, assets):
         `string` release: The AltTester version to use.
         `string` assets: The Assets folder path.
     """
+    print(f"release: {release}") #DEBUGGING
+    print(f"assets: {assets}") #DEBUGGING
     with ZipFile("AltTester.zip", 'r') as zip:
         zip.extractall(f"{assets}/temp")
     if os.path.exists(f"{assets}/AltTester"):
@@ -43,6 +46,7 @@ def modify_manifest(manifest):
     Args:
         `string` manifest: The manifest file to modify.
     """
+    print(f"manifest: {manifest}") #DEBUGGING
     newtonsoft = {"com.unity.nuget.newtonsoft-json": "3.0.1"}
     testables = {"testables":["com.unity.inputsystem"]}
     editorcoroutines = {"com.unity.editorcoroutines": "1.0.0"}
@@ -62,6 +66,7 @@ def modify_build_file_usings(buildFile):
     Args:
         `string` buildFile: The build file to modify.
     """
+    print(f"buildFile: {buildFile}") #DEBUGGING
     buildUsingDirectives = """\
 using Altom.AltTesterEditor;
 using Altom.AltTester;"""
@@ -80,6 +85,7 @@ def get_scenes_of_game(settings):
     Returns:
         `string[]` scenes: The scenes to be included in the build.
     """
+    print(f"settings: {settings}") #DEBUGGING
     scenes = []
     with open(settings, "r") as f:
         lines = f.readlines()
@@ -98,6 +104,9 @@ def modify_build_file_method(scenes, buildFile, buildMethod):
         `string` buildFile: The build file to modify.
         `string` buildMethod: The build method to modify.
     """
+    print(f"scenes: {scenes}") #DEBUGGING
+    print(f"buildFile: {buildFile}") #DEBUGGING
+    print(f"buildMethod: {buildMethod}") #DEBUGGING
     buildMethodBody = f"""\
         var buildTargetGroup = BuildTargetGroup.Android;
         AltBuilder.AddAltTesterInScriptingDefineSymbolsGroup(buildTargetGroup);
@@ -133,6 +142,8 @@ def delete_line_and_preceding (file_path, value):
         `string` file_path: The path to the file to modify.
         `string` value: The path to the file to modify.
     """
+    print(f"file_path: {file_path}") #DEBUGGING
+    print(f"value: {value}") #DEBUGGING
     with open(file_path, 'r+') as file:
         lines = file.readlines()
         fileOutBuffer = []
@@ -145,19 +156,21 @@ def delete_line_and_preceding (file_path, value):
         file.write("".join(fileOutBuffer))
 
 
-def delete_csharp_if(file_path, target_string):
+def delete_csharp_if(file_path, value):
     """
     Find C# conditional logic and make it unconditional.  
 
     Args:
         `string` file_path: The path to the file to modify.
-        `string` target_string: String to search for.
+        `string` value: String to search for.
     """
+    print(f"filePath: {file_path}") #DEBUGGING
+    print(f"value: {value}") #DEBUGGING
     with open(file_path, 'r+') as file:
         lines = file.readlines()
         fileOutBuffer = []
         for i in range(len(lines)):
-            if ("if" in lines[i]) and (target_string in lines[i]):
+            if ("if" in lines[i]) and (value in lines[i]):
                 if "{" in lines[i]:
                     fileOutBuffer.append("if (true) {\n")
                 else:
@@ -169,21 +182,23 @@ def delete_csharp_if(file_path, target_string):
         file.write("".join(fileOutBuffer))
 
 
-def delete_using (file_path, target_string):
+def delete_using (file_path, value):
     """
     Delete library imports in C#.
 
     Args:
         `string` file_path : Path to the file to modify.
-        `string` target_string : name of the package to remove.
+        `string` value : name of the package to remove.
     """
+    print(f"filePath: {file_path}") #DEBUGGING
+    print(f"value: {value}") #DEBUGGING
     with open(file_path, 'r') as file:
         lines = file.readlines()
         fileOutBuffer = []
         linez_2_pop = []
         popped_count = 0
         for i in range(len(lines)):
-            if ("using" in lines[i]) and (target_string in lines[i]):
+            if ("using" in lines[i]) and (value in lines[i]):
                 linez_2_pop.append(i)
             fileOutBuffer.append(lines[i])
         for badline in linez_2_pop:
@@ -201,6 +216,7 @@ def remove_new_input_system(assets):
     Args:
         `string` assets: The Assets folder path.
     """
+    print(f"filePath: {assets}") #DEBUGGING
     os.remove(f"{assets}/AltTester/AltServer/NewInputSystem.cs")
     os.remove(f"{assets}/AltTester/AltServer/AltKeyMapping.cs")
 
@@ -231,15 +247,6 @@ if __name__ == "__main__":
     parser.add_argument("--buildMethod", required=True, help="[required] The build method to modify.")
     parser.add_argument("--inputSystem", required=True, help="[default='old'] Specify new or old.")
     args=parser.parse_args()
-
-    logging.info(f"release: {args.release}")
-    logging.info(f"assets: {args.assets}")
-    logging.info(f"release: {args.release}")
-    logging.info(f"settings: {args.settings}")
-    logging.info(f"manifest: {args.manifest}")
-    logging.info(f"buildFile: {args.buildFile}")
-    logging.info(f"buildMethod: {args.buildMethod}")
-    logging.info(f"inputSystem: {args.inputSystem}")
 
     download_alttester(release=args.release)
     add_alttester_to_project(release=args.release, assets=args.assets)
