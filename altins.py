@@ -199,8 +199,8 @@ def delete_using (file_path, value):
         `string` value : name of the package to remove.
     """
     print("Delete library imports in C#.") #DEBUGGING
-    print(f"filePath: {file_path}") #DEBUGGING
-    print(f"value: {value}") #DEBUGGING
+    print(f"  filePath: {file_path}") #DEBUGGING
+    print(f"  value: {value}") #DEBUGGING
     with open(file_path, 'r') as file:
         lines = file.readlines()
         fileOutBuffer = []
@@ -226,7 +226,7 @@ def remove_new_input_system(assets):
         `string` assets: The Assets folder path.
     """
     print("remove_new_input_system(assets)") #DEBUGGING
-    print(f"filePath: {assets}") #DEBUGGING
+    print(f"  filePath: {assets}") #DEBUGGING
     os.remove(f"{assets}/AltTester/AltServer/NewInputSystem.cs")
     os.remove(f"{assets}/AltTester/AltServer/AltKeyMapping.cs")
 
