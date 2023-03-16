@@ -6,6 +6,7 @@ from zipfile import ZipFile
 import shutil
 import json
 import os
+import logging
 
 def download_alttester(release):
     """
@@ -225,6 +226,16 @@ if __name__ == "__main__":
     parser.add_argument("--buildMethod", required=True, help="[required] The build method to modify.")
     parser.add_argument("--inputSystem", required=True, help="[default='old'] Specify new or old.")
     args=parser.parse_args()
+
+    logging.info(f"release: {args.release}")
+    logging.info(f"assets: {args.assets}")
+    logging.info(f"release: {args.release}")
+    logging.info(f"settings: {args.settings}")
+    logging.info(f"manifest: {args.manifest}")
+    logging.info(f"buildFile: {args.buildFile}")
+    logging.info(f"buildMethod: {args.buildMethod}")
+    logging.info(f"inputSystem: {args.inputSystem}")
+
 
     download_alttester(release=args.release)
     add_alttester_to_project(release=args.release, assets=args.assets)
