@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import argparse
+from importlib.metadata import version
 import urllib.request
 from zipfile import ZipFile
 import shutil
 import json
 import os
-
 
 def download_alttester(release):
     """
@@ -216,14 +216,14 @@ def remove_new_input_system(assets):
 # Main entry point.
 if __name__ == "__main__":
     parser=argparse.ArgumentParser()
-    parser.add_argument("--version", help="1.0.0") # ToDo: Pull in from TOML?
+    parser.add_argument("--version", help=version("AltTester-Instrumenter"))
     parser.add_argument("--release", help="The AltTester version to use.")
     parser.add_argument("--assets", help="The Assets folder path.")
     parser.add_argument("--settings", help="The build settings file.")
     parser.add_argument("--manifest", help="The manifest file to modify.")
     parser.add_argument("--buildFile", help="The build file to modify.")
     parser.add_argument("--buildMethod", help="The build method to modify.")
-    parser.add_argument("--inputSystem", help="new or old")
+    parser.add_argument("--inputSystem", help="Specify new or old.")
     args=parser.parse_args()
 
     download_alttester(release=args.release)
