@@ -248,5 +248,5 @@ if __name__ == "__main__":
     scene_array = get_scenes_of_game(settings=args.settings)
     modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod)
 
-    if str(args.inputSystem).lower == "old":
+    if "old" in args.inputSystem:
             remove_new_input_system(args.assets)
