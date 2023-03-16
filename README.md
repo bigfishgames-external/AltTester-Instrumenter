@@ -2,21 +2,22 @@
 Instruments Unity games with AltTester.
 
 ## Install
-`pip3 install git+https://github.com/bigfishgames-external/AltTester-Instrumenter.git`
+1. `pip3 install git+https://github.com/bigfishgames-external/AltTester-Instrumenter.git`
+1. `python3 -m altins --version`
 
 ## Usage
 `python3 -m altins --help`
 ```
 options:
-  -h, --help                show this help message and exit
-  --version VERSION         1.0.0
-  --release RELEASE         The AltTester version to use.
-  --assets ASSETS           The Assets folder path.
-  --settings SETTINGS       The build settings file.
-  --manifest MANIFEST       The manifest file to modify.
-  --buildFile BUILDFILE     The build file to modify.
-  --buildMethod BUILDMETHOD The build method to modify.
-  --inputSystem INPUTSYSTEM Specify new or old.
+  -h, --help                    show this help message and exit
+  --version                     show program's version number and exit
+  --release     RELEASE         [required] The AltTester version to use.
+  --assets      ASSETS          [required] The Assets folder path.
+  --settings    SETTINGS        [required] The build settings file.
+  --manifest    MANIFEST        [required] The manifest file to modify.
+  --buildFile   BUILDFILE       [required] The build file to modify.
+  --buildMethod BUILDMETHOD     [required] The build method to modify.
+  --inputSystem INPUTSYSTEM     [default=old] Specify new or old.
 ```
 
 ## Uninstall
