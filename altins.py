@@ -216,7 +216,7 @@ def remove_new_input_system(assets):
 # Main entry point.
 if __name__ == "__main__":
     parser=argparse.ArgumentParser()
-    parser.add_argument("--version", action=version("AltTester-Instrumenter"))
+    parser.add_argument("--version", action=f"\"{version('AltTester-Instrumenter')}\"")
     parser.add_argument("--release", help="The AltTester version to use.")
     parser.add_argument("--assets", help="The Assets folder path.")
     parser.add_argument("--settings", help="The build settings file.")
