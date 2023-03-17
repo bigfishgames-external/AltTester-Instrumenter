@@ -55,9 +55,12 @@ def modify_manifest(manifest):
     editorcoroutines = {"com.unity.editorcoroutines": "1.0.0"}
     with open(manifest,'r+') as file:
         file_data = json.load(file)
-        file_data["dependencies"].update(newtonsoft)
-        file_data.update(testables)
-        file_data["dependencies"].update(editorcoroutines)
+        if "com.unity.nuget.newtonsoft-json" not in file_data:
+            file_data["dependencies"].update(newtonsoft)
+        if "com.unity.inputsystem" not in file_data:
+            file_data.update(testables)
+        if "com.unity.editorcoroutines" not in file_data:
+            file_data["dependencies"].update(editorcoroutines)
         file.seek(0)
         json.dump(file_data, file, indent = 2)
 
