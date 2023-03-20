@@ -204,9 +204,9 @@ def delete_using(file_path, value):
     print("delete_using(file_path, value)") #DEBUGGING
     print(f"  filePath: {file_path}") #DEBUGGING
     print(f"  value: {value}") #DEBUGGING
+    fileOutBuffer = []
     with open(file_path, 'r') as file:
         lines = file.readlines()
-        fileOutBuffer = []
         linez_2_pop = []
         popped_count = 0
         for i in range(len(lines)):
@@ -242,7 +242,7 @@ def remove_new_input_system(assets):
     delete_csharp_if(f"{assets}/AltTester/AltServer/Input.cs", "InputSystemUIInputModule")
     delete_using(f"{assets}/AltTester/AltServer/Input.cs", "UnityEngine.InputSystem.UI")
     delete_csharp_if(f"{assets}/AltTester/AltServer/AltMockUpPointerInputModule.cs", "InputSystemUIInputModule")
-    delete_using(f"{assets}/AltTester/AltServer/AltMockupPointerInputModule.cs", "UnityEngine.InputSystem.UI")
+    delete_using(f"{assets}/AltTester/AltServer/AltMockUpPointerInputModule.cs", "UnityEngine.InputSystem.UI")
 
 
 # Main entry point.
