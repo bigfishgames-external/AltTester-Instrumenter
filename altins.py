@@ -193,7 +193,7 @@ def delete_csharp_if(file_path, value):
         file.write("".join(fileOutBuffer))
 
 
-def delete_using (file_path, value):
+def delete_using(file_path, value):
     """
     Delete library imports in C#.
 
@@ -201,7 +201,7 @@ def delete_using (file_path, value):
         `string` file_path : Path to the file to modify.
         `string` value : name of the package to remove.
     """
-    print("Delete library imports in C#.") #DEBUGGING
+    print("delete_using(file_path, value)") #DEBUGGING
     print(f"  filePath: {file_path}") #DEBUGGING
     print(f"  value: {value}") #DEBUGGING
     with open(file_path, 'r') as file:
