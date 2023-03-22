@@ -62,7 +62,7 @@ def modify_manifest(manifest):
         if "com.unity.nuget.newtonsoft-json" not in file_data:
             file_data["dependencies"].update(newtonsoft)
         if "com.unity.inputsystem" not in file_data:
-            file_data["testables"].update(testables)
+            file_data["testables"].append(testables)
         if "com.unity.editorcoroutines" not in file_data:
             file_data["dependencies"].update(editorcoroutines)
         file.seek(0)
