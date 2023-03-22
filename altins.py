@@ -45,12 +45,13 @@ def add_alttester_to_project(release, assets):
     os.remove("AltTester.zip")
 
 
-def modify_manifest(manifest):
+def modify_manifest(manifest, newt = True):
     """
     Modify's the given "manifest.json" to include new dependenciess.
 
     Args:
         `string` manifest: The manifest file to modify.
+        `bool` newt: Include newtonsoft in the main manifest.json.
     """
     #print("modify_manifest(manifest)") #DEBUGGING
     #print(f"  manifest: {manifest}") #DEBUGGING
@@ -59,7 +60,7 @@ def modify_manifest(manifest):
     editorcoroutines = {"com.unity.editorcoroutines": "1.0.0"}
     with open(manifest,'r+') as file:
         file_data = json.load(file)
-        if "com.unity.nuget.newtonsoft-json" not in file_data:
+        if newt and ("com.unity.nuget.newtonsoft-json" not in file_data):
             file_data["dependencies"].update(newtonsoft)
         if "com.unity.inputsystem" not in file_data:
             file_data["testables"].append(inputsystem)
@@ -260,6 +261,7 @@ if __name__ == "__main__":
     parser.add_argument("--assets", required=True, help="[required] The Assets folder path.")
     parser.add_argument("--settings", required=True, help="[required] The build settings file.")
     parser.add_argument("--manifest", required=True, help="[required] The manifest file to modify.")
+    parser.add_argument("--newt", required=False, help="[optional, default=True] Include newtonsoft in the main manifest.json.")
     parser.add_argument("--buildFile", required=True, help="[required] The build file to modify.")
     parser.add_argument("--buildMethod", required=True, help="[required] The build method to modify.")
     parser.add_argument("--inputSystem", required=True, help="[default='old'] Specify new or old.")
