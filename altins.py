@@ -39,6 +39,8 @@ def add_alttester_to_project(release, assets):
         os.remove(f"{assets}/AltTester.meta")
     if os.path.exists(f"{assets}/AltTester"):
         shutil.rmtree(f"{assets}/AltTester")
+    shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/AltTester.meta", f"{assets}/AltTester.meta")
+    shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/AltTester", f"{assets}/AltTester")
     shutil.rmtree(f"{assets}/temp")
     os.remove("AltTester.zip")
 
