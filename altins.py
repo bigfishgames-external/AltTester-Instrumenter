@@ -45,7 +45,7 @@ def add_alttester_to_project(release, assets):
         shutil.rmtree(f"{assets}/Resources/AltTester")
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/AltTester.meta", f"{assets}/AltTester.meta")
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/AltTester", f"{assets}/AltTester")
-    shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/Resources.meta", f"{assets}/Resources.meta")
+    shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/Resources/AltTester.meta", f"{assets}/Resources/AltTester.meta")
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/Resources/AltTester", f"{assets}/Resources/AltTester")
     shutil.rmtree(f"{assets}/temp")
     os.remove("AltTester.zip")
