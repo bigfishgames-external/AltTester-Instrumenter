@@ -51,10 +51,11 @@ def modify_manifest(manifest, newt = True):
 
     Args:
         `string` manifest: The manifest file to modify.
-        `bool` newt: Include newtonsoft in the main manifest.json.
+        `bool` newt: [default=True]Include newtonsoft in the main manifest.json.
     """
-    #print("modify_manifest(manifest)") #DEBUGGING
-    #print(f"  manifest: {manifest}") #DEBUGGING
+    print("modify_manifest(manifest)") #DEBUGGING
+    print(f"  manifest: {manifest}") #DEBUGGING
+    print(f"  newt: {newt}") #DEBUGGING
     newtonsoft = {"com.unity.nuget.newtonsoft-json": "3.0.1"}
     inputsystem = "com.unity.inputsystem"
     editorcoroutines = {"com.unity.editorcoroutines": "1.0.0"}
@@ -269,7 +270,7 @@ if __name__ == "__main__":
 
     download_alttester(release=args.release)
     add_alttester_to_project(release=args.release, assets=args.assets)
-    modify_manifest(manifest=args.manifest,newt=args.newt)
+    modify_manifest(manifest=args.manifest, newt=args.newt)
     modify_build_file_usings(buildFile=args.buildFile)
     scene_array = get_scenes_of_game(settings=args.settings)
     modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod)
