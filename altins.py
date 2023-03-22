@@ -55,7 +55,7 @@ def modify_manifest(manifest):
     #print("modify_manifest(manifest)") #DEBUGGING
     #print(f"  manifest: {manifest}") #DEBUGGING
     newtonsoft = {"com.unity.nuget.newtonsoft-json": "3.0.1"}
-    testables = ["com.unity.inputsystem"]
+    testables = {"com.unity.inputsystem"}
     editorcoroutines = {"com.unity.editorcoroutines": "1.0.0"}
     with open(manifest,'r+') as file:
         file_data = json.load(file)
