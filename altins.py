@@ -41,8 +41,8 @@ def add_alttester_to_project(release, assets):
         shutil.rmtree(f"{assets}/AltTester")
     if os.path.exists(f"{assets}/Resources.meta"):
         os.remove(f"{assets}/Resources.meta")
-    if os.path.exists(f"{assets}/Resources"):
-        shutil.rmtree(f"{assets}/Resources")
+    if os.path.exists(f"{assets}/Resources/AltTester"):
+        shutil.rmtree(f"{assets}/Resources/AltTester")
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/AltTester.meta", f"{assets}/AltTester.meta")
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/AltTester", f"{assets}/AltTester")
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-v.{release}/Assets/Resources.meta", f"{assets}/Resources.meta")
