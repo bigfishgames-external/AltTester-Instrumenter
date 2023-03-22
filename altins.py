@@ -269,7 +269,7 @@ if __name__ == "__main__":
 
     download_alttester(release=args.release)
     add_alttester_to_project(release=args.release, assets=args.assets)
-    modify_manifest(manifest=args.manifest)
+    modify_manifest(manifest=args.manifest,newt=args.newt)
     modify_build_file_usings(buildFile=args.buildFile)
     scene_array = get_scenes_of_game(settings=args.settings)
     modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod)
