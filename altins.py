@@ -55,14 +55,14 @@ def modify_manifest(manifest):
     #print("modify_manifest(manifest)") #DEBUGGING
     #print(f"  manifest: {manifest}") #DEBUGGING
     newtonsoft = {"com.unity.nuget.newtonsoft-json": "3.0.1"}
-    testables = {"com.unity.inputsystem"}
+    inputsystem = "com.unity.inputsystem"
     editorcoroutines = {"com.unity.editorcoroutines": "1.0.0"}
     with open(manifest,'r+') as file:
         file_data = json.load(file)
         if "com.unity.nuget.newtonsoft-json" not in file_data:
             file_data["dependencies"].update(newtonsoft)
         if "com.unity.inputsystem" not in file_data:
-            file_data["testables"].append(testables)
+            file_data["testables"].append(inputsystem)
         if "com.unity.editorcoroutines" not in file_data:
             file_data["dependencies"].update(editorcoroutines)
         file.seek(0)
