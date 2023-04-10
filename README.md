@@ -22,7 +22,7 @@ options:
 ```
 
 ### Example
-`python3 -m altins --release="1.8.2" --assets="Assets" --settings="ProjectSettings/EditorBuildSettings.asset" --manifest="Packages/manifest.json" --buildFile="Assets/Editor/BundleAndBuild.cs" --buildMethod="Build()" --inputSystem="old"`
+`python3 -m altins --release="1.8.2" --assets="Assets" --settings="ProjectSettings/EditorBuildSettings.asset" --manifest="Packages/manifest.json" --buildFile="Assets/Editor/BundleAndBuild.cs" --buildMethod="Build()" --inputSystem="old" --newt="True"`
 
 ## Uninstall
 `pip3 uninstall AltTester-Instrumenter`
