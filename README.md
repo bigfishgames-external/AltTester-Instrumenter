@@ -18,6 +18,7 @@ options:
   --buildFile   BUILDFILE       [required] The build file to modify.
   --buildMethod BUILDMETHOD     [required] The build method to modify.
   --inputSystem INPUTSYSTEM     [required] Specify new or old.
+  --newt        NEWTONSOFT      [required] Add newtonsoft to the manifest.
 ```
 
 ### Example
