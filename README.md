@@ -31,7 +31,7 @@ options:
 BFG uses [Jenkins](https://www.jenkins.io/) for Continuous Integration and Continuous Delivery.
 
 ### JENKINS FILE
-This file includes what would be in the local `.env` file (above) in the `export`s (below). The following is an example of running AltTester-Instrumenter before a game build.
+The following is an example of running AltTester-Instrumenter before a game build.
 
 ```
 pipeline {
