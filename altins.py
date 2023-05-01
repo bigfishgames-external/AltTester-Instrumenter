@@ -129,9 +129,13 @@ def modify_build_file_method(scenes, buildFile, buildMethod):
         if (buildTargetGroup == UnityEditor.BuildTargetGroup.Standalone) {{
             AltBuilder.CreateJsonFileForInputMappingOfAxis();
         }}
-        var instrumentationSettings = new AltInstrumentationSettings();
-        var FirstSceneOfTheGame = "{scenes[0]}";
-        AltBuilder.InsertAltInScene(FirstSceneOfTheGame, instrumentationSettings);"""
+        var instrumentationSettings = new AltInstrumentationSettings();"""
+    i = 0
+    for scene in scenes:
+        buildMethodBody = buildMethodBody + f"""\
+            var scene{i} = "{scene}";
+            AltBuilder.InsertAltInScene(scene{i}, instrumentationSettings);"""
+        i+=1
     with open(buildFile, 'r') as infile:
         data = infile.read()
     rowData = data.split("\n")
