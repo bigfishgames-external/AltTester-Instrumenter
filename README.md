@@ -26,3 +26,29 @@ options:
 
 ## Uninstall
 `pip3 uninstall AltTester-Instrumenter`
+
+## CI/CD
+BFG uses [Jenkins](https://www.jenkins.io/) for Continuous Integration and Continuous Delivery.
+
+### JENKINS FILE
+This file includes what would be in the local `.env` file (above) in the `export`s (below). The following is an example of running AltTester-Instrumenter before a game build.
+
+```
+pipeline {
+  parameters {
+    booleanParam name: 'Test_Instrument', description: 'For E2E Test Builds', defaultValue: false
+  }
+  stages {
+    stage('Android Build') {
+      steps {
+        script {
+          if (params.Test_Instrument) {
+            sh 'pip3 install git+https://github.com/bigfishgames-external/AltTester-Instrumenter.git'
+            sh 'python3 -m altins --release=1.8.2 --assets="Assets" --settings="ProjectSettings/EditorBuildSettings.asset" --manifest="Packages/manifest.json" --buildFile="Assets/Scripts/Editor/Build.cs" --buildMethod="BuildAndroid()" --inputSystem="old" --newt="True"'
+          }
+        }
+      }
+    }
+  }
+}
+```
