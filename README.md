@@ -46,8 +46,8 @@ pipeline {
             sh 'pip3 install git+https://github.com/bigfishgames-external/AltTester-Instrumenter.git'
             sh 'python3 -m altins --release=1.8.2 --assets="Assets" --settings="ProjectSettings/EditorBuildSettings.asset" --manifest="Packages/manifest.json" --buildFile="Assets/Scripts/Editor/Build.cs" --buildMethod="BuildAndroid()" --inputSystem="old" --newt="True"'
           }
-        sh '$UNITY_EXEC -buildTarget Android -executeMethod Build.BuildAndroid $UNITY_PARAMS'
         }
+        sh '$UNITY_EXEC -buildTarget Android -executeMethod Build.BuildAndroid $UNITY_PARAMS'
       }
     }
   }
