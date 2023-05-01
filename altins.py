@@ -132,7 +132,7 @@ def modify_build_file_method(scenes, buildFile, buildMethod):
         var instrumentationSettings = new AltInstrumentationSettings();"""
     i = 0
     for scene in scenes:
-        buildMethodBody = buildMethodBody + f"""\
+        buildMethodBody = buildMethodBody + f"""
             var scene{i} = "{scene}";
             AltBuilder.InsertAltInScene(scene{i}, instrumentationSettings);"""
         i+=1
