@@ -1,6 +1,6 @@
 [project]
 name = "AltTester-Instrumenter"
-version = "1.0.0"
+version = "1.0.1"
 description = "Instruments Unity games with AltTester."
 license = {text = "MIT"}
 authors = [
