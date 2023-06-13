@@ -18,7 +18,7 @@ def download_alttester(release):
     """
     #print("download_alttester(release)") #DEBUGGING
     #print(f"  release: {release}") # DEBUGGING
-    zip_url = f"https://github.com/alttester/AltTester-Unity-SDK/archive/refs/tags/v.{release}.zip"
+    zip_url = f"https://github.com/alttester/AltTester-Unity-SDK/archive/refs/tags/{release}.zip"
     urllib.request.urlretrieve(zip_url, "AltTester.zip")
 
 
