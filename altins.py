@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import argparse
 from importlib.metadata import version
-import urllib.request
 from zipfile import ZipFile
 import shutil
 import json
@@ -19,7 +18,7 @@ def download_alttester(release):
     #print("download_alttester(release)") #DEBUGGING
     #print(f"  release: {release}") # DEBUGGING
     zip_url = f"https://github.com/alttester/AltTester-Unity-SDK/archive/refs/tags/{release}.zip"
-    urllib.request.urlretrieve(zip_url, "AltTester.zip")
+    os.system(f"curl {zip_url} -o AltTester.zip -L")
 
 
 def add_alttester_to_project(release, assets):
