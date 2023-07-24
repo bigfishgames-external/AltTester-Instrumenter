@@ -280,4 +280,5 @@ if __name__ == "__main__":
     modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod)
 
     if "old" in args.inputSystem:
+        if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
             remove_new_input_system(args.assets)
