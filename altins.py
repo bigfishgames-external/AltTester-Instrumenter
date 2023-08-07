@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+from glob import glob
 from importlib.metadata import version
 from zipfile import ZipFile
 import shutil
@@ -87,6 +88,24 @@ using Altom.AltTester;"""
         content = f.read()
         f.seek(0, 0)
         f.write(buildUsingDirectives + "\n" + content)
+
+
+def modify_asmdef(assets):
+    """
+    Modifies any `.asmdef` files to include the AltTester and AltTesterEditor references.
+
+    Args:
+        `string` assets: The Assets folder path.
+    """
+    for filename in glob(f"/{assets}/**/*.asmdef", recursive=True):
+        with open(filename,'r+') as file:
+            file_data = json.load(file)
+            if "AltTester" not in file_data["references"]:
+                file_data["references"].append("AltTester")
+            if "AltTester" not in file_data["references"]:
+                file_data["references"].append("AltTesterEditor")
+            file.seek(0)
+            json.dump(file_data, file, indent = 3)
 
 
 def get_scenes_of_game(settings):
@@ -275,6 +294,7 @@ if __name__ == "__main__":
     download_alttester(release=args.release)
     add_alttester_to_project(release=args.release, assets=args.assets)
     modify_manifest(manifest=args.manifest, newt=args.newt)
+    modify_asmdef(assets=args.assets)
     modify_build_file_usings(buildFile=args.buildFile)
     scene_array = get_scenes_of_game(settings=args.settings)
     modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod)
