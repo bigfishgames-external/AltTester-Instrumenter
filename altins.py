@@ -100,9 +100,9 @@ def modify_asmdef(assets):
     for filename in glob(f"/{assets}/**/*.asmdef", recursive=True):
         with open(filename, mode='r+', encoding='utf-8-sig') as file:
             file_data = json.load(file)
-            if "AltTester" not in file_data["references"]:
+            if "AltTester" not in file_data:
                 file_data["references"].append("AltTester")
-            if "AltTester" not in file_data["references"]:
+            if "AltTesterEditor" not in file_data:
                 file_data["references"].append("AltTesterEditor")
             file.seek(0)
             json.dump(file_data, file, indent = 3)
