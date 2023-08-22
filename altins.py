@@ -98,7 +98,7 @@ def modify_asmdef(assets):
         `string` assets: The Assets folder path.
     """
     for filename in glob(f"/{assets}/**/*.asmdef", recursive=True):
-        with open(filename,'r+') as file:
+        with open(filename, mode='r+', encoding='utf-8-sig') as file:
             file_data = json.load(file)
             if "AltTester" not in file_data["references"]:
                 file_data["references"].append("AltTester")
