@@ -98,16 +98,17 @@ def modify_asmdef(assets):
         `string` assets: The Assets folder path.
     """
     for filename in glob(f"/{assets}/**/*.asmdef", recursive=True):
-        with open(filename, mode='r+', encoding='utf-8-sig') as file:
-            file_data = json.load(file)
-            if "references" not in file_data:
-                file_data["references"] = []
-            if "AltTester" not in file_data["references"]:
-                file_data["references"].append("AltTester")
-            if "AltTesterEditor" not in file_data["references"]:
-                file_data["references"].append("AltTesterEditor")
-            file.seek(0)
-            json.dump(file_data, file, indent = 3)
+        if "AltTester" not in filename:
+            with open(filename, mode='r+', encoding='utf-8-sig') as file:
+                file_data = json.load(file)
+                if "references" not in file_data:
+                    file_data["references"] = []
+                if "AltTester" not in file_data["references"]:
+                    file_data["references"].append("AltTester")
+                if "AltTesterEditor" not in file_data["references"]:
+                    file_data["references"].append("AltTesterEditor")
+                file.seek(0)
+                json.dump(file_data, file, indent = 3)
 
 
 def get_scenes_of_game(settings):
