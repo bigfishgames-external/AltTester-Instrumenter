@@ -131,7 +131,7 @@ def get_scenes_of_game(settings):
     return scenes
 
 
-def modify_build_file_method(scenes, buildFile, buildMethod):
+def modify_build_file_method(scenes, buildFile, buildMethod, target):
     """
     Modifies the given method in the given ".cs" file to add AltTester objects to the scenes.
     
@@ -139,13 +139,14 @@ def modify_build_file_method(scenes, buildFile, buildMethod):
         `string[]` scenes: The scenes to be included in the build.
         `string` buildFile: The build file to modify.
         `string` buildMethod: The build method to modify.
+        `string` target: The target to build ("Android" or "iOS").
     """
     #print("modify_build_file_method(scenes, buildFile, buildMethod)") #DEBUGGING
     #print(f"  scenes: {scenes}") #DEBUGGING
     #print(f"  buildFile: {buildFile}") #DEBUGGING
     #print(f"  buildMethod: {buildMethod}") #DEBUGGING
     buildMethodBody = f"""\
-        var buildTargetGroup = BuildTargetGroup.Android;
+        var buildTargetGroup = BuildTargetGroup.{target};
         AltBuilder.AddAltTesterInScriptingDefineSymbolsGroup(buildTargetGroup);
         if (buildTargetGroup == UnityEditor.BuildTargetGroup.Standalone) {{
             AltBuilder.CreateJsonFileForInputMappingOfAxis();
@@ -291,6 +292,7 @@ if __name__ == "__main__":
     parser.add_argument("--newt", required=False, help="[optional, default='True'] Include newtonsoft in the main manifest.json.")
     parser.add_argument("--buildFile", required=True, help="[required] The build file to modify.")
     parser.add_argument("--buildMethod", required=True, help="[required] The build method to modify.")
+    parser.add_argument("--target", required=True, help="[required] The build target (Android or iOS).")
     parser.add_argument("--inputSystem", required=True, help="[default='old'] Specify new or old.")
     args=parser.parse_args()
 
@@ -300,7 +302,7 @@ if __name__ == "__main__":
     modify_asmdef(assets=args.assets)
     modify_build_file_usings(buildFile=args.buildFile)
     scene_array = get_scenes_of_game(settings=args.settings)
-    modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod)
+    modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
 
     if "old" in args.inputSystem:
         if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
