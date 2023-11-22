@@ -72,7 +72,7 @@ def modify_manifest(manifest, newt = "True"):
         json.dump(file_data, file, indent = 2)
 
 
-def modify_build_file_usings(buildFile):
+def modify_build_file_usings(buildFile, version: str):
     """
     Modifies the given ".cs" file to include new using directives.
 
@@ -81,9 +81,17 @@ def modify_build_file_usings(buildFile):
     """
     #print("modify_build_file_usings(buildFile)") #DEBUGGING
     #print(f"  buildFile: {buildFile}") #DEBUGGING
-    buildUsingDirectives = """\
-using Altom.AltTesterEditor;
-using Altom.AltTester;"""
+    buildUsingDirectives = ""
+
+    if version.startswith("2."):
+        buildUsingDirectives = """\
+using AltTester.AltTesterUnitySDK;
+using AltTester.AltTesterUnitySDK.Editor;"""
+    else:
+        buildUsingDirectives = """\
+using Altom.AltUnityTesterEditor;
+using Altom.AltUnityTester;"""
+
     with open(buildFile, "r+") as f:
         content = f.read()
         f.seek(0, 0)
