@@ -83,7 +83,7 @@ def modify_build_file_usings(buildFile, release: str):
     #print(f"  buildFile: {buildFile}") #DEBUGGING
     buildUsingDirectives = ""
 
-    if version.startswith("2."):
+    if release.startswith("2."):
         buildUsingDirectives = """\
 using AltTester.AltTesterUnitySDK;
 using AltTester.AltTesterUnitySDK.Editor;"""
