@@ -72,7 +72,7 @@ def modify_manifest(manifest, newt = "True"):
         json.dump(file_data, file, indent = 2)
 
 
-def modify_build_file_usings(buildFile, version: str):
+def modify_build_file_usings(buildFile, release: str):
     """
     Modifies the given ".cs" file to include new using directives.
 
@@ -308,7 +308,7 @@ if __name__ == "__main__":
     add_alttester_to_project(release=args.release, assets=args.assets)
     modify_manifest(manifest=args.manifest, newt=args.newt)
     modify_asmdef(assets=args.assets)
-    modify_build_file_usings(buildFile=args.buildFile)
+    modify_build_file_usings(buildFile=args.buildFile,release=args.release)
     scene_array = get_scenes_of_game(settings=args.settings)
     modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
 
