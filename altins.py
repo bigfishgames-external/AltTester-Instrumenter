@@ -98,7 +98,7 @@ using Altom.AltUnityTester;"""
         f.write(buildUsingDirectives + "\n" + content)
 
 
-def modify_asmdef(assets):
+def modify_asmdef(assets, release):
     """
     Modifies any `.asmdef` files to include the AltTester and AltTesterEditor references.
 
@@ -111,10 +111,16 @@ def modify_asmdef(assets):
                 file_data = json.load(file)
                 if "references" not in file_data:
                     file_data["references"] = []
-                if "AltTester" not in file_data["references"]:
-                    file_data["references"].append("AltTester")
-                if "AltTesterEditor" not in file_data["references"]:
-                    file_data["references"].append("AltTesterEditor")
+                if release.startswith("2."):
+                    if "AltTester" not in file_data["references"]:
+                        file_data["references"].append("AltTester")
+                    if "AltTesterEditor" not in file_data["references"]:
+                        file_data["references"].append("AltTesterEditor")
+                else:
+                    if "AltUnityTester" not in file_data["references"]:
+                        file_data["references"].append("AltUnityTester")
+                    if "AltUnityTesterEditor" not in file_data["references"]:
+                        file_data["references"].append("AltUnityTesterEditor")
                 file.seek(0)
                 json.dump(file_data, file, indent = 3)
 
@@ -307,7 +313,7 @@ if __name__ == "__main__":
     download_alttester(release=args.release)
     add_alttester_to_project(release=args.release, assets=args.assets)
     modify_manifest(manifest=args.manifest, newt=args.newt)
-    modify_asmdef(assets=args.assets)
+    modify_asmdef(assets=args.assets, release=args.release)
     modify_build_file_usings(buildFile=args.buildFile,release=args.release)
     scene_array = get_scenes_of_game(settings=args.settings)
     modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
