@@ -7,7 +7,6 @@ import shutil
 import json
 import os
 
-
 def download_alttester(release):
     """
     Downloads the given version of AltTester from GitHub.
@@ -19,7 +18,6 @@ def download_alttester(release):
     #print(f"  release: {release}") # DEBUGGING
     zip_url = f"https://github.com/alttester/AltTester-Unity-SDK/archive/refs/tags/{release}.zip"
     os.system(f"curl {zip_url} -o AltTester.zip -L")
-
 def add_alttester_to_project(release, assets):
     """
     Unzips "AltTester.zip" to the given Assets directory.
@@ -40,7 +38,6 @@ def add_alttester_to_project(release, assets):
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-{release}/Assets/AltTester", f"{assets}/AltTester")
     shutil.rmtree(f"{assets}/temp")
     os.remove("AltTester.zip")
-
 def modify_manifest(manifest, newt = "True"):
     """
     Modify's the given "manifest.json" to include new dependenciess.
@@ -65,7 +62,6 @@ def modify_manifest(manifest, newt = "True"):
             file_data["dependencies"].update(editorcoroutines)
         file.seek(0)
         json.dump(file_data, file, indent = 2)
-
 def modify_build_file_usings(buildFile):
     """
     Modifies the given ".cs" file to include new using directives.
@@ -81,7 +77,6 @@ using Altom.AltTester;"""
         content = f.read()
         f.seek(0, 0)
         f.write(buildUsingDirectives + "\n" + content)
-
 def modify_asmdef(assets):
     """
     Modifies any `.asmdef` files to include the AltTester and AltTesterEditor references.
@@ -100,7 +95,6 @@ def modify_asmdef(assets):
                     file_data["references"].append("AltTesterEditor")
                 file.seek(0)
                 json.dump(file_data, file, indent = 3)
-
 def get_scenes_of_game(settings):
     """
     Gets a list of scenes from the given "EditorBuildSettings.asset" file.
@@ -118,8 +112,6 @@ def get_scenes_of_game(settings):
             if "path" in line:
                 scenes.append(line[line.rindex(" ")+1:].rstrip("\n"))
     return scenes
-
-
 def modify_build_file_method(scenes, buildFile, buildMethod, target):
     """
     Modifies the given method in the given ".cs" file to add AltTester objects to the scenes.
@@ -163,7 +155,6 @@ def modify_build_file_method(scenes, buildFile, buildMethod, target):
         outData.insert(line_to_add_code, buildMethodBody)
     with open(buildFile, 'w') as outfile:
         outfile.write('\n'.join(outData))
-
 def delete_line_and_preceding (file_path, value):
     """
     Removes the line of code that contains the given sting and the line preceeding it from the returned data.
@@ -184,7 +175,6 @@ def delete_line_and_preceding (file_path, value):
                 fileOutBuffer.append(lines[i])
     with open(file_path, 'w') as file:
         file.write("".join(fileOutBuffer))
-
 def delete_csharp_if(file_path, value):
     """
     Find C# conditional logic and make it unconditional.  
@@ -208,7 +198,6 @@ def delete_csharp_if(file_path, value):
                 fileOutBuffer.append(lines[i])
     with open(file_path, 'w') as file:
         file.write("".join(fileOutBuffer))
-
 def delete_using(file_path, value):
     """
     Delete library imports in C#.
@@ -234,7 +223,6 @@ def delete_using(file_path, value):
     
     with open(file_path, 'w') as file:
         file.write("".join(fileOutBuffer))
-        
 def remove_new_input_system(assets):
     """
     Removes all references to the new input system.
