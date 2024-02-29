@@ -147,7 +147,7 @@ def modify_build_file_method(scenes, buildFile, buildMethod, target):
     line_to_add_code = 0
     for i in range(len(rowData)):
         outData.append(rowData[i])
-        if buildMethod in rowData[i]:
+        if buildMethod + '()' in rowData[i] and "public" in rowData[i]:
             if "{" in rowData[i]:
                 line_to_add_code = i+1
             else:
