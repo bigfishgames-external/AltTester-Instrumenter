@@ -49,7 +49,7 @@ pipeline {
         script {
           if (params.Test_Instrument) {
             sh 'pip3 install git+https://github.com/bigfishgames-external/AltTester-Instrumenter.git'
-            sh 'python3 -m altins --release="2.1.0" --assets="Assets" --settings="ProjectSettings/EditorBuildSettings.asset" --manifest="Packages/manifest.json" --buildFile="Assets/Editor/Build/ProjectBuilderAndroid.cs" --buildMethod="Build" --target=="Android" --inputSystem="old"'
+            sh 'python3 -m altins --release="2.1.0" --buildFile="Assets/Editor/Build/ProjectBuilderAndroid.cs" --buildMethod="Build" --target=="Android"'
           }
           sh '$UNITY_EXEC -buildTarget Android -executeMethod Build.BuildAndroid $UNITY_PARAMS'
         }
