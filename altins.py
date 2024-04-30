@@ -124,7 +124,6 @@ def get_scenes_of_game(settings):
         lines = f.readlines()
         for line in lines:
             if "path" in line:
-                print("SCENE NAME: ", line)
                 scenes.append(line[line.rindex(" ")+1:].rstrip("\n"))
     return scenes
 
@@ -151,7 +150,6 @@ def modify_build_file_method(scenes, buildFile, buildMethod, target):
         var instrumentationSettings = new AltInstrumentationSettings();"""
     i = 0
     for scene in scenes:
-        print("adding scene: ", scene)
         buildMethodBody = buildMethodBody + f"""
             var scene{i} = "{scene}";
             AltBuilder.InsertAltInScene(scene{i}, instrumentationSettings);"""
