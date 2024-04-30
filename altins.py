@@ -284,7 +284,7 @@ if __name__ == "__main__":
     modify_asmdef(assets=args.assets)
     modify_build_file_usings(buildFile=args.buildFile)
     scene_array = get_scenes_of_game(settings=args.settings)
-    modify_build_file_method(first_scene, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
+    modify_build_file_method(scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
 
     if "old" in args.inputSystem:
         if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
