@@ -52,12 +52,6 @@ def modify_manifest(manifest, newt = "True"):
     inputsystem = "com.unity.inputsystem"
     editorcoroutines = {"com.unity.editorcoroutines": "1.0.0"}
 
-    # get the current working directory
-    current_working_directory = os.getcwd()
-
-    # print output to the console
-    print('current directory = ', current_working_directory)
-
     with open(manifest,'r+') as file:
         file_data = json.load(file)
         if (newt == "True") and ("com.unity.nuget.newtonsoft-json" not in file_data):
@@ -124,7 +118,6 @@ def get_scenes_of_game(settings):
         lines = f.readlines()
         for line in lines:
             if "path" in line:
-                print("SCENE NAME: ", line)
                 scenes.append(line[line.rindex(" ")+1:].rstrip("\n"))
     return scenes
 
@@ -151,7 +144,7 @@ def modify_build_file_method(scenes, buildFile, buildMethod, target):
         var instrumentationSettings = new AltInstrumentationSettings();"""
     i = 0
     for scene in scenes:
-        print("adding scene: ", scene)
+        print("Adding Alttester to scene: ", scene)
         buildMethodBody = buildMethodBody + f"""
             var scene{i} = "{scene}";
             AltBuilder.InsertAltInScene(scene{i}, instrumentationSettings);"""
