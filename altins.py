@@ -51,6 +51,13 @@ def modify_manifest(manifest, newt = "True"):
     newtonsoft = {"com.unity.nuget.newtonsoft-json": "3.0.1"}
     inputsystem = "com.unity.inputsystem"
     editorcoroutines = {"com.unity.editorcoroutines": "1.0.0"}
+
+    # get the current working directory
+    current_working_directory = os.getcwd()
+
+    # print output to the console
+    print('current directory = ', current_working_directory)
+
     with open(manifest,'r+') as file:
         file_data = json.load(file)
         if (newt == "True") and ("com.unity.nuget.newtonsoft-json" not in file_data):
@@ -102,7 +109,7 @@ def modify_asmdef(assets):
                 file.truncate()
                 json.dump(file_data, file, indent = 3)
 
-def get_first_scene(settings):
+def get_scenes_of_game(settings):
     """
     Gets a list of scenes from the given "EditorBuildSettings.asset" file.
     Args:
@@ -112,13 +119,15 @@ def get_first_scene(settings):
     """
     #print("get_scenes_of_game(settings)") #DEBUGGING
     #print(f"  settings: {settings}") #DEBUGGING
+    scenes = []
     with open(settings, "r") as f:
         lines = f.readlines()
         for line in lines:
             if "path" in line:
-                return line[line.rindex(" ")+1:].rstrip("\n")
+                scenes.append(line[line.rindex(" ")+1:].rstrip("\n"))
+    return scenes
 
-def modify_build_file_method(scene, buildFile, buildMethod, target):
+def modify_build_file_method(scenes, buildFile, buildMethod, target):
     """
     Modifies the given method in the given ".cs" file to add AltTester objects to the given first scene in the app
     
@@ -138,8 +147,13 @@ def modify_build_file_method(scene, buildFile, buildMethod, target):
         if (buildTargetGroup == UnityEditor.BuildTargetGroup.Standalone) {{
             AltBuilder.CreateJsonFileForInputMappingOfAxis();
         }}
-        var instrumentationSettings = new AltInstrumentationSettings();
-        AltBuilder.InsertAltInScene("{scene}", instrumentationSettings);"""
+        var instrumentationSettings = new AltInstrumentationSettings();"""
+    i = 0
+    for scene in scenes:
+        buildMethodBody = buildMethodBody + f"""
+            var scene{i} = "{scene}";
+            AltBuilder.InsertAltInScene(scene{i}, instrumentationSettings);"""
+        i+=1
     with open(buildFile, 'r') as infile:
         data = infile.read()
     rowData = data.split("\n")
@@ -269,7 +283,7 @@ if __name__ == "__main__":
     modify_manifest(manifest=args.manifest, newt=args.newt)
     modify_asmdef(assets=args.assets)
     modify_build_file_usings(buildFile=args.buildFile)
-    first_scene = get_first_scene(args.settings)
+    scene_array = get_scenes_of_game(settings=args.settings)
     modify_build_file_method(first_scene, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
 
     if "old" in args.inputSystem:
