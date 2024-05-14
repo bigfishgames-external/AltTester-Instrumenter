@@ -12,18 +12,22 @@ options:
   -h, --help                    show this help message and exit
   --version                     show program's version number and exit
   --release     RELEASE         [required] The AltTester version to use.
-  --assets      ASSETS          [required] The Assets folder path.
-  --settings    SETTINGS        [required] The build settings file.
-  --manifest    MANIFEST        [required] The manifest file to modify.
   --buildFile   BUILDFILE       [required] The build file to modify.
   --buildMethod BUILDMETHOD     [required] The build method to modify.
-  --inputSystem INPUTSYSTEM     [required] Specify new or old.
-  --target      INPUTSYSTEM     [required] The build target (Android or iOS).
-  --newt        NEWTONSOFT      [required] Add newtonsoft to the manifest.
+  --target      TARGET          [required] The build target (Android or iOS).
+  --assets      ASSETS          [optional, default='Assets'] Specify if there is a different Assets folder
+  --settings    SETTINGS        [optional, default='ProjectSettings/EditorBuildSettings.asset'] Specify if there is a different EditorBuildSettings.asset file
+  --manifest    MANIFEST        [optional, default='Packages/manifest.json'] Specify if there is a different manifest.json file to modify.
+  --newt        NEWTONSOFT      [optional, default='True'] Add newtonsoft to the manifest.
+  --inputSystem INPUTSYSTEM     [optional, default='old'] Specify new or old.
+
 ```
 
 ### Example
-`python3 -m altins --release="2.0.2" --assets="Assets" --settings="ProjectSettings/EditorBuildSettings.asset" --manifest="Packages/manifest.json" --buildFile="Assets/Scripts/Editor/Build.cs" --buildMethod="BuildAndroid()" --inputSystem="old" --target="Android" --newt="True"`
+`python3 -m altins --release="2.1.0" --buildFile="Assets/Editor/Build/ProjectBuilderAndroid.cs" --buildMethod="Build" --target="Android"`
+
+For Evermerge, build file is either "Assets/Editor/Build/ProjectBuilderAndroid.cs" or "Assets/Editor/Build/ProjectBuilderIos.cs", and buildMethod should just be "Build"
+
 
 ## Uninstall
 `pip3 uninstall AltTester-Instrumenter`
@@ -45,7 +49,7 @@ pipeline {
         script {
           if (params.Test_Instrument) {
             sh 'pip3 install git+https://github.com/bigfishgames-external/AltTester-Instrumenter.git'
-            sh 'python3 -m altins --release="2.0.2" --assets="Assets" --settings="ProjectSettings/EditorBuildSettings.asset" --manifest="Packages/manifest.json" --buildFile="Assets/Scripts/Editor/Build.cs" --buildMethod="BuildAndroid()" --target=="Android" --inputSystem="old" --newt="True"'
+            sh 'python3 -m altins --release="2.1.0" --buildFile="Assets/Editor/Build/ProjectBuilderAndroid.cs" --buildMethod="Build" --target="Android"'
           }
           sh '$UNITY_EXEC -buildTarget Android -executeMethod Build.BuildAndroid $UNITY_PARAMS'
         }

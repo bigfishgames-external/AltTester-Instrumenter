@@ -7,6 +7,7 @@ import shutil
 import json
 import os
 
+
 def download_alttester(release):
     """
     Downloads the given version of AltTester from GitHub.
@@ -18,6 +19,7 @@ def download_alttester(release):
     #print(f"  release: {release}") # DEBUGGING
     zip_url = f"https://github.com/alttester/AltTester-Unity-SDK/archive/refs/tags/{release}.zip"
     os.system(f"curl {zip_url} -o AltTester.zip -L")
+
 def add_alttester_to_project(release, assets):
     """
     Unzips "AltTester.zip" to the given Assets directory.
@@ -38,6 +40,7 @@ def add_alttester_to_project(release, assets):
     shutil.move(f"{assets}/temp/AltTester-Unity-SDK-{release}/Assets/AltTester", f"{assets}/AltTester")
     shutil.rmtree(f"{assets}/temp")
     os.remove("AltTester.zip")
+
 def modify_manifest(manifest, newt = "True"):
     """
     Modify's the given "manifest.json" to include new dependenciess.
@@ -62,6 +65,7 @@ def modify_manifest(manifest, newt = "True"):
             file_data["dependencies"].update(editorcoroutines)
         file.seek(0)
         json.dump(file_data, file, indent = 2)
+
 def modify_build_file_usings(buildFile):
     """
     Modifies the given ".cs" file to include new using directives.
@@ -71,32 +75,34 @@ def modify_build_file_usings(buildFile):
     #print("modify_build_file_usings(buildFile)") #DEBUGGING
     #print(f"  buildFile: {buildFile}") #DEBUGGING
     buildUsingDirectives = """\
-using Altom.AltTesterEditor;
-using Altom.AltTester;"""
+using AltTester.AltTesterUnitySDK.Editor;
+using AltTester.AltTesterUnitySDK;"""
     with open(buildFile, "r+") as f:
         content = f.read()
         f.seek(0, 0)
         f.write(buildUsingDirectives + "\n" + content)
+
 def modify_asmdef(assets):
     """
-    Modifies any `.asmdef` files to include the AltTester and AltTesterEditor references.
+    Modifies any `.asmdef` files to include the AltTester.AltTesterUnitySDK and AltTester.AltTesterUnitySDK.Editor references.
     Args:
         `string` assets: The Assets folder path.
     """
-    for filename in glob(f"/{assets}/**/*.asmdef", recursive=True):
+    for filename in glob(f"{assets}/**/*.asmdef", recursive=True):
         if "AltTester" not in filename and "Plugins" not in filename:
             with open(filename, mode='r+', encoding='utf-8-sig') as file:
                 file_data = json.load(file)
                 if "references" not in file_data:
                     file_data["references"] = []
-                if "AltTester" not in file_data["references"]:
-                    file_data["references"].append("AltTester")
-                if "AltTesterEditor" not in file_data["references"]:
-                    file_data["references"].append("AltTesterEditor")
+                if "AltTester.AltTesterUnitySDK" not in file_data["references"]:
+                    file_data["references"].append("AltTester.AltTesterUnitySDK")
+                if "AltTester.AltTesterUnitySDK.Editor" not in file_data["references"]:
+                    file_data["references"].append("AltTester.AltTesterUnitySDK.Editor")
                 file.seek(0)
                 file.truncate()
                 json.dump(file_data, file, indent = 3)
-def get_scenes_of_game(settings):
+
+def get_first_scene(settings):
     """
     Gets a list of scenes from the given "EditorBuildSettings.asset" file.
     Args:
@@ -106,19 +112,18 @@ def get_scenes_of_game(settings):
     """
     #print("get_scenes_of_game(settings)") #DEBUGGING
     #print(f"  settings: {settings}") #DEBUGGING
-    scenes = []
     with open(settings, "r") as f:
         lines = f.readlines()
         for line in lines:
             if "path" in line:
-                scenes.append(line[line.rindex(" ")+1:].rstrip("\n"))
-    return scenes
-def modify_build_file_method(scenes, buildFile, buildMethod, target):
+                return line[line.rindex(" ")+1:].rstrip("\n")
+
+def modify_build_file_method(scene, buildFile, buildMethod, target):
     """
-    Modifies the given method in the given ".cs" file to add AltTester objects to the scenes.
+    Modifies the given method in the given ".cs" file to add AltTester objects to the given first scene in the app
     
     Args:
-        `string[]` scenes: The scenes to be included in the build.
+        `string` scene: The scene to insert AltTester on
         `string` buildFile: The build file to modify.
         `string` buildMethod: The build method to modify.
         `string` target: The target to build ("Android" or "iOS").
@@ -133,25 +138,24 @@ def modify_build_file_method(scenes, buildFile, buildMethod, target):
         if (buildTargetGroup == UnityEditor.BuildTargetGroup.Standalone) {{
             AltBuilder.CreateJsonFileForInputMappingOfAxis();
         }}
-        var instrumentationSettings = new AltInstrumentationSettings();"""
-    i = 0
-    for scene in scenes:
-        buildMethodBody = buildMethodBody + f"""
-            var scene{i} = "{scene}";
-            AltBuilder.InsertAltInScene(scene{i}, instrumentationSettings);"""
-        i+=1
+        var instrumentationSettings = new AltInstrumentationSettings();
+        AltBuilder.InsertAltInScene("{scene}", instrumentationSettings);"""
     with open(buildFile, 'r') as infile:
         data = infile.read()
     rowData = data.split("\n")
     outData = []
     line_to_add_code = 0
+    in_build_method = False
+    in_brackets = False
     for i in range(len(rowData)):
         outData.append(rowData[i])
-        if buildMethod + '()' in rowData[i] and "public" in rowData[i]:
+        if not in_build_method and ' ' + buildMethod + '(' in rowData[i] and "public" in rowData[i]:
+            in_build_method = True
+
+        if in_build_method and not in_brackets:
             if "{" in rowData[i]:
+                in_brackets = True
                 line_to_add_code = i+1
-            else:
-                line_to_add_code = i+2
     if line_to_add_code > 0:
         outData.insert(line_to_add_code, buildMethodBody)
     with open(buildFile, 'w') as outfile:
@@ -250,14 +254,14 @@ if __name__ == "__main__":
     parser=argparse.ArgumentParser()
     parser.add_argument("--version", action="version", version=f"{v}")
     parser.add_argument("--release", required=True, help="[required] The AltTester version to use.")
-    parser.add_argument("--assets", required=True, help="[required] The Assets folder path.")
-    parser.add_argument("--settings", required=True, help="[required] The build settings file.")
-    parser.add_argument("--manifest", required=True, help="[required] The manifest file to modify.")
-    parser.add_argument("--newt", required=False, help="[optional, default='True'] Include newtonsoft in the main manifest.json.")
     parser.add_argument("--buildFile", required=True, help="[required] The build file to modify.")
     parser.add_argument("--buildMethod", required=True, help="[required] The build method to modify.")
-    parser.add_argument("--target", required=True, help="[required] The build target (Android or iOS).")
-    parser.add_argument("--inputSystem", required=True, help="[default='old'] Specify new or old.")
+    parser.add_argument("--target", required=True, help="[required] The build target (Android or iOS).")    
+    parser.add_argument("--assets", required=False, default="Assets", help="[optional, default='Assets'] The Assets folder path.")
+    parser.add_argument("--settings", required=False, default="ProjectSettings/EditorBuildSettings.asset", help="[optional, default='ProjectSettings/EditorBuildSettings.asset'] The build settings file.")
+    parser.add_argument("--manifest", required=False, default="Packages/manifest.json", help="[optional, default='Packages/manifest.json'] The manifest file to modify.")
+    parser.add_argument("--newt", required=False, default="True", help="[optional, default='True'] Include newtonsoft in the main manifest.json.")
+    parser.add_argument("--inputSystem", required=False, default="old", help="[default='old'] Specify new or old.")
     args=parser.parse_args()
 
     download_alttester(release=args.release)
@@ -265,8 +269,8 @@ if __name__ == "__main__":
     modify_manifest(manifest=args.manifest, newt=args.newt)
     modify_asmdef(assets=args.assets)
     modify_build_file_usings(buildFile=args.buildFile)
-    scene_array = get_scenes_of_game(settings=args.settings)
-    modify_build_file_method(scenes=scene_array, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
+    first_scene = get_first_scene(args.settings)
+    modify_build_file_method(first_scene, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
 
     if "old" in args.inputSystem:
         if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
