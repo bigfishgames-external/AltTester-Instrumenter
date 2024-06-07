@@ -24,7 +24,7 @@ options:
 ```
 
 ### Example
-`python3 -m altins --release="2.1.0" --buildFile="Assets/Editor/Build/ProjectBuilderAndroid.cs" --buildMethod="Build" --target="Android"`
+`python3 -m altins --release="2.1.1" --buildFile="Assets/Editor/Build/ProjectBuilderAndroid.cs" --buildMethod="Build" --target="Android"`
 
 For Evermerge, build file is either "Assets/Editor/Build/ProjectBuilderAndroid.cs" or "Assets/Editor/Build/ProjectBuilderIos.cs", and buildMethod should just be "Build"
 
@@ -49,7 +49,7 @@ pipeline {
         script {
           if (params.Test_Instrument) {
             sh 'pip3 install git+https://github.com/bigfishgames-external/AltTester-Instrumenter.git'
-            sh 'python3 -m altins --release="2.1.0" --buildFile="Assets/Editor/Build/ProjectBuilderAndroid.cs" --buildMethod="Build" --target="Android"'
+            sh 'python3 -m altins --release="2.1.1" --buildFile="Assets/Editor/Build/ProjectBuilderAndroid.cs" --buildMethod="Build" --target="Android"'
           }
           sh '$UNITY_EXEC -buildTarget Android -executeMethod Build.BuildAndroid $UNITY_PARAMS'
         }

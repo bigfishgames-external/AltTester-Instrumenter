@@ -139,6 +139,7 @@ def modify_build_file_method(scene, buildFile, buildMethod, target):
             AltBuilder.CreateJsonFileForInputMappingOfAxis();
         }}
         var instrumentationSettings = new AltInstrumentationSettings();
+        instrumentationSettings.AltServerHost = "client-eng-dev.bigfishgames.com";
         AltBuilder.InsertAltInScene("{scene}", instrumentationSettings);"""
     with open(buildFile, 'r') as infile:
         data = infile.read()
