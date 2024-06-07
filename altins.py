@@ -118,7 +118,7 @@ def get_first_scene(settings):
             if "path" in line:
                 return line[line.rindex(" ")+1:].rstrip("\n")
 
-def modify_build_file_method(scene, buildFile, buildMethod, target):
+def modify_build_file_method(scene, buildFile, buildMethod, target, hostname, hostport):
     """
     Modifies the given method in the given ".cs" file to add AltTester objects to the given first scene in the app
     
@@ -139,7 +139,8 @@ def modify_build_file_method(scene, buildFile, buildMethod, target):
             AltBuilder.CreateJsonFileForInputMappingOfAxis();
         }}
         var instrumentationSettings = new AltInstrumentationSettings();
-        instrumentationSettings.AltServerHost = "client-eng-dev.bigfishgames.com";
+        instrumentationSettings.AltServerHost = hostname;
+        instrumentationSettings.AltServerPort = hostport;
         AltBuilder.InsertAltInScene("{scene}", instrumentationSettings);"""
     with open(buildFile, 'r') as infile:
         data = infile.read()
@@ -259,6 +260,8 @@ if __name__ == "__main__":
     parser.add_argument("--buildMethod", required=True, help="[required] The build method to modify.")
     parser.add_argument("--target", required=True, help="[required] The build target (Android or iOS).")    
     parser.add_argument("--assets", required=False, default="Assets", help="[optional, default='Assets'] The Assets folder path.")
+    parser.add_argument("--hostname", required=False, default="127.0.0.1", help="[optional, default='127.0.0.1'] The default hostname for the alttester server")
+    parser.add_argument("--hostport", required=False, default="13000", help="[optional, default='13000'] The default host port for the alttester server")
     parser.add_argument("--settings", required=False, default="ProjectSettings/EditorBuildSettings.asset", help="[optional, default='ProjectSettings/EditorBuildSettings.asset'] The build settings file.")
     parser.add_argument("--manifest", required=False, default="Packages/manifest.json", help="[optional, default='Packages/manifest.json'] The manifest file to modify.")
     parser.add_argument("--newt", required=False, default="True", help="[optional, default='True'] Include newtonsoft in the main manifest.json.")
@@ -271,7 +274,7 @@ if __name__ == "__main__":
     modify_asmdef(assets=args.assets)
     modify_build_file_usings(buildFile=args.buildFile)
     first_scene = get_first_scene(args.settings)
-    modify_build_file_method(first_scene, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target)
+    modify_build_file_method(first_scene, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target, hostname=args.hostname, hostport=args.hostport)
 
     if "old" in args.inputSystem:
         if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
