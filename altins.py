@@ -119,7 +119,7 @@ def get_first_scene(settings):
                 return line[line.rindex(" ")+1:].rstrip("\n")
 
 def modify_build_file_method(scene, buildFile, buildMethod, target, hostname, hostport):
-    '''
+    """
     Modifies the given method in the given ".cs" file to add AltTester objects to the given first scene in the app
     
     Args:
@@ -127,7 +127,7 @@ def modify_build_file_method(scene, buildFile, buildMethod, target, hostname, ho
         `string` buildFile: The build file to modify.
         `string` buildMethod: The build method to modify.
         `string` target: The target to build ("Android" or "iOS").
-    '''
+    """
     #print("modify_build_file_method(scenes, buildFile, buildMethod)") #DEBUGGING
     #print(f"  scenes: {scenes}") #DEBUGGING
     #print(f"  buildFile: {buildFile}") #DEBUGGING
