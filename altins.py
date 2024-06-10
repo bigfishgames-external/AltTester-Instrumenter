@@ -159,9 +159,6 @@ def modify_build_file_method(scene, buildFile, buildMethod, target, hostname, ho
         outData.insert(line_to_add_code, buildMethodBody)
     with open(buildFile, 'w') as outfile:
         outfile.write('\n'.join(outData))
-    print('PRINTING ENTIRE FILE FOR DEBUG')
-    with open(buildFile, 'r') as f:
-        print(f.read())
 def delete_line_and_preceding (file_path, value):
     """
     Removes the line of code that contains the given sting and the line preceeding it from the returned data.
