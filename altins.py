@@ -139,7 +139,7 @@ def modify_build_file_method(scene, buildFile, buildMethod, target, hostname, ho
             AltBuilder.CreateJsonFileForInputMappingOfAxis();
         }}
         var instrumentationSettings = new AltInstrumentationSettings();
-        instrumentationSettings.AltServerHost = {hostname};
+        instrumentationSettings.AltServerHost = '{hostname}';
         instrumentationSettings.AltServerPort = {hostport};
         AltBuilder.InsertAltInScene("{scene}", instrumentationSettings);"""
     with open(buildFile, 'r') as infile:
