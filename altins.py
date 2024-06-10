@@ -246,8 +246,8 @@ def remove_new_input_system(assets):
     delete_csharp_if(f"{assets}/AltTester/AltServer/AltMockUpPointerInputModule.cs", "InputSystemUIInputModule")
     delete_using(f"{assets}/AltTester/AltServer/AltMockUpPointerInputModule.cs", "UnityEngine.InputSystem.UI")
 
-def remove_location_reference():
-    with open("/Assets/AltTester/Runtime/Input.cs", 'r') as infile:
+def remove_location_reference(assets):
+    with open(f"{assets}/AltTester/Runtime/Input.cs", 'r') as infile:
         data = infile.read()
     
     rowData = data.split("\n")
@@ -255,7 +255,7 @@ def remove_location_reference():
     for i in range(len(rowData)):
         if "LocationService" not in rowData[i]:
             outData.append(rowData[i])
-    with open("/Assets/AltTester/Runtime/Input.cs", 'w') as outfile:
+    with open(f"{assets}/AltTester/Runtime/Input.cs", 'w') as outfile:
         outfile.write('\n'.join(outData))
     
 # Main entry point.
@@ -286,7 +286,7 @@ if __name__ == "__main__":
     first_scene = get_first_scene(args.settings)
     modify_build_file_method(first_scene, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target, hostname=args.hostname, hostport=args.hostport)
     if "iOS" in args.target:
-        remove_location_reference()
+        remove_location_reference(args.assets)
 
     if "old" in args.inputSystem:
         if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
