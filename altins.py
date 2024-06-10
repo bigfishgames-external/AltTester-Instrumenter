@@ -276,8 +276,8 @@ if __name__ == "__main__":
     modify_manifest(manifest=args.manifest, newt=args.newt)
     modify_asmdef(assets=args.assets)
     modify_build_file_usings(buildFile=args.buildFile)
-    first_scene = get_first_scene(args.settings)
-    modify_build_file_method(first_scene, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target, hostname=args.hostname, hostport=args.hostport)
+    #first_scene = get_first_scene(args.settings)
+    #modify_build_file_method(first_scene, buildFile=args.buildFile, buildMethod=args.buildMethod, target=args.target, hostname=args.hostname, hostport=args.hostport)
 
     if "old" in args.inputSystem:
         if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
