@@ -235,19 +235,19 @@ def remove_new_input_system(assets):
     """
     #print("remove_new_input_system(assets)") #DEBUGGING
     #print(f"  filePath: {assets}") #DEBUGGING
-    os.remove(f"{assets}/AltTester/AltServer/NewInputSystem.cs")
-    os.remove(f"{assets}/AltTester/AltServer/AltKeyMapping.cs")
+    os.remove(f"{assets}/AltTester/Runtime/Input/NewInputSystem.cs")
+    os.remove(f"{assets}/AltTester/Runtime/Input/AltKeyMapping.cs")
     shutil.rmtree(f"{assets}/AltTester/Examples")
     os.remove(f"{assets}/AltTester/Examples.meta")
-    alt_prefab_drag_path = f"{assets}/AltTester/AltServer/AltPrefabDrag.cs"
+    alt_prefab_drag_path = f"{assets}/AltTester/Runtime/UI/AltPrefabDrag.cs"
     delete_line_and_preceding(alt_prefab_drag_path, "UnityEngine.InputSystem")
-    delete_csharp_if(f"{assets}/AltTester/AltServer/Input.cs", "InputSystemUIInputModule")
-    delete_using(f"{assets}/AltTester/AltServer/Input.cs", "UnityEngine.InputSystem.UI")
-    delete_csharp_if(f"{assets}/AltTester/AltServer/AltMockUpPointerInputModule.cs", "InputSystemUIInputModule")
-    delete_using(f"{assets}/AltTester/AltServer/AltMockUpPointerInputModule.cs", "UnityEngine.InputSystem.UI")
+    delete_csharp_if(f"{assets}/AltTester/Runtime/Input/Input.cs", "InputSystemUIInputModule")
+    delete_using(f"{assets}/AltTester/Runtime/Input/Input.cs", "UnityEngine.InputSystem.UI")
+    delete_csharp_if(f"{assets}/AltTester/Runtime/Input/AltMockUpPointerInputModule.cs", "InputSystemUIInputModule")
+    delete_using(f"{assets}/AltTester/Runtime/Input/AltMockUpPointerInputModule.cs", "UnityEngine.InputSystem.UI")
 
 def remove_location_reference(assets):
-    with open(f"{assets}/AltTester/Runtime/Input.cs", 'r') as infile:
+    with open(f"{assets}/AltTester/Runtime/Input/Input.cs", 'r') as infile:
         data = infile.read()
     
     rowData = data.split("\n")
@@ -289,5 +289,5 @@ if __name__ == "__main__":
         remove_location_reference(args.assets)
 
     if "old" in args.inputSystem:
-        if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
+        if os.path.exists(f"{args.assets}/AltTester/Runtime/Input/Input.cs"):
             remove_new_input_system(args.assets)
