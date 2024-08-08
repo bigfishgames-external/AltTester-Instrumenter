@@ -255,7 +255,7 @@ def remove_location_reference(assets):
     for i in range(len(rowData)):
         if "LocationService" not in rowData[i]:
             outData.append(rowData[i])
-    with open(f"{assets}/AltTester/Runtime/Input.cs", 'w') as outfile:
+    with open(f"{assets}/AltTester/Runtime/Input/Input.cs", 'w') as outfile:
         outfile.write('\n'.join(outData))
     
 # Main entry point.
