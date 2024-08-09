@@ -250,9 +250,6 @@ def remove_new_input_system(assets):
     delete_using(f"{assets}/AltTester/Runtime/Input/AltMockUpPointerInputModule.cs", "UnityEngine.InputSystem.UI")
 
 def remove_location_reference(assets):
-    for filename in glob(f"{assets}/AltTester/**", recursive=True):
-        print(filename)
-
     with open(f"{assets}/AltTester/Runtime/Input/Input.cs", 'r') as infile:
         data = infile.read()
     
