@@ -76,7 +76,8 @@ def modify_build_file_usings(buildFile):
     #print(f"  buildFile: {buildFile}") #DEBUGGING
     buildUsingDirectives = """\
 using AltTester.AltTesterUnitySDK.Editor;
-using AltTester.AltTesterUnitySDK;"""
+using AltTester.AltTesterUnitySDK;
+using AltTester.AltTesterUnitySDK.Driver;"""
     with open(buildFile, "r+") as f:
         content = f.read()
         f.seek(0, 0)
@@ -84,7 +85,7 @@ using AltTester.AltTesterUnitySDK;"""
 
 def modify_asmdef(assets):
     """
-    Modifies any `.asmdef` files to include the AltTester.AltTesterUnitySDK and AltTester.AltTesterUnitySDK.Editor references.
+    Modifies any `.asmdef` files to include the AltTester.AltTesterUnitySDK, AltTester.AltTesterUnitySDK.Driver and AltTester.AltTesterUnitySDK.Editor references.
     Args:
         `string` assets: The Assets folder path.
     """
@@ -98,6 +99,8 @@ def modify_asmdef(assets):
                     file_data["references"].append("AltTester.AltTesterUnitySDK")
                 if "AltTester.AltTesterUnitySDK.Editor" not in file_data["references"]:
                     file_data["references"].append("AltTester.AltTesterUnitySDK.Editor")
+                if "AltTester.AltTesterUnitySDK.Driver" not in file_data["references"]:
+                    file_data["references"].append("AltTester.AltTesterUnitySDK.Driver")
                 file.seek(0)
                 file.truncate()
                 json.dump(file_data, file, indent = 3)
