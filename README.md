@@ -15,6 +15,8 @@ options:
   --buildFile   BUILDFILE       [required] The build file to modify.
   --buildMethod BUILDMETHOD     [required] The build method to modify.
   --target      TARGET          [required] The build target (Android or iOS).
+  --hostname    HOSTNAME        [optional, default='127.0.0.1'] Specify the hostname for your AltServer (leave blank if running locally)
+  --hostport    PORT            [optional, default='13000'] Specify a port for the AltServer
   --assets      ASSETS          [optional, default='Assets'] Specify if there is a different Assets folder
   --settings    SETTINGS        [optional, default='ProjectSettings/EditorBuildSettings.asset'] Specify if there is a different EditorBuildSettings.asset file
   --manifest    MANIFEST        [optional, default='Packages/manifest.json'] Specify if there is a different manifest.json file to modify.
