@@ -76,7 +76,8 @@ def modify_build_file_usings(buildFile):
     #print(f"  buildFile: {buildFile}") #DEBUGGING
     buildUsingDirectives = """\
 using AltTester.AltTesterUnitySDK.Editor;
-using AltTester.AltTesterUnitySDK;"""
+using AltTester.AltTesterUnitySDK;
+using AltTester.AltTesterUnitySDK.Driver;"""
     with open(buildFile, "r+") as f:
         content = f.read()
         f.seek(0, 0)
@@ -84,7 +85,7 @@ using AltTester.AltTesterUnitySDK;"""
 
 def modify_asmdef(assets):
     """
-    Modifies any `.asmdef` files to include the AltTester.AltTesterUnitySDK and AltTester.AltTesterUnitySDK.Editor references.
+    Modifies any `.asmdef` files to include the AltTester.AltTesterUnitySDK, AltTester.AltTesterUnitySDK.Driver and AltTester.AltTesterUnitySDK.Editor references.
     Args:
         `string` assets: The Assets folder path.
     """
@@ -98,6 +99,8 @@ def modify_asmdef(assets):
                     file_data["references"].append("AltTester.AltTesterUnitySDK")
                 if "AltTester.AltTesterUnitySDK.Editor" not in file_data["references"]:
                     file_data["references"].append("AltTester.AltTesterUnitySDK.Editor")
+                if "AltTester.AltTesterUnitySDK.Driver" not in file_data["references"]:
+                    file_data["references"].append("AltTester.AltTesterUnitySDK.Driver")
                 file.seek(0)
                 file.truncate()
                 json.dump(file_data, file, indent = 3)
@@ -235,19 +238,19 @@ def remove_new_input_system(assets):
     """
     #print("remove_new_input_system(assets)") #DEBUGGING
     #print(f"  filePath: {assets}") #DEBUGGING
-    os.remove(f"{assets}/AltTester/AltServer/NewInputSystem.cs")
-    os.remove(f"{assets}/AltTester/AltServer/AltKeyMapping.cs")
+    os.remove(f"{assets}/AltTester/Runtime/Input/NewInputSystem.cs")
+    os.remove(f"{assets}/AltTester/Runtime/Input/AltKeyMapping.cs")
     shutil.rmtree(f"{assets}/AltTester/Examples")
     os.remove(f"{assets}/AltTester/Examples.meta")
-    alt_prefab_drag_path = f"{assets}/AltTester/AltServer/AltPrefabDrag.cs"
+    alt_prefab_drag_path = f"{assets}/AltTester/Runtime/UI/AltPrefabDrag.cs"
     delete_line_and_preceding(alt_prefab_drag_path, "UnityEngine.InputSystem")
-    delete_csharp_if(f"{assets}/AltTester/AltServer/Input.cs", "InputSystemUIInputModule")
-    delete_using(f"{assets}/AltTester/AltServer/Input.cs", "UnityEngine.InputSystem.UI")
-    delete_csharp_if(f"{assets}/AltTester/AltServer/AltMockUpPointerInputModule.cs", "InputSystemUIInputModule")
-    delete_using(f"{assets}/AltTester/AltServer/AltMockUpPointerInputModule.cs", "UnityEngine.InputSystem.UI")
+    delete_csharp_if(f"{assets}/AltTester/Runtime/Input/Input.cs", "InputSystemUIInputModule")
+    delete_using(f"{assets}/AltTester/Runtime/Input/Input.cs", "UnityEngine.InputSystem.UI")
+    delete_csharp_if(f"{assets}/AltTester/Runtime/Input/AltMockUpPointerInputModule.cs", "InputSystemUIInputModule")
+    delete_using(f"{assets}/AltTester/Runtime/Input/AltMockUpPointerInputModule.cs", "UnityEngine.InputSystem.UI")
 
 def remove_location_reference(assets):
-    with open(f"{assets}/AltTester/Runtime/Input.cs", 'r') as infile:
+    with open(f"{assets}/AltTester/Runtime/Input/Input.cs", 'r') as infile:
         data = infile.read()
     
     rowData = data.split("\n")
@@ -255,7 +258,7 @@ def remove_location_reference(assets):
     for i in range(len(rowData)):
         if "LocationService" not in rowData[i]:
             outData.append(rowData[i])
-    with open(f"{assets}/AltTester/Runtime/Input.cs", 'w') as outfile:
+    with open(f"{assets}/AltTester/Runtime/Input/Input.cs", 'w') as outfile:
         outfile.write('\n'.join(outData))
     
 # Main entry point.
@@ -289,5 +292,5 @@ if __name__ == "__main__":
         remove_location_reference(args.assets)
 
     if "old" in args.inputSystem:
-        if os.path.exists(f"{args.assets}/AltTester/AltServer/Input.cs"):
+        if os.path.exists(f"{args.assets}/AltTester/Runtime/Input/Input.cs"):
             remove_new_input_system(args.assets)
